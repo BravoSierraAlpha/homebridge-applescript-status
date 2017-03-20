@@ -14,6 +14,14 @@
 			"name": "Security Camera",
 			"on": "tell application ''Evocam'' to open ''Security.evocamsettings''",
 			"off": "quit application ''Evocam''"
+		},
+		{
+			"accessory": "Applescript",
+			"name": "Music",
+			"type": "file",
+			"on": "/Users/rhodesy22/Documents/AppleScript/iTunesPlay.scpt",
+			"off": "/Users/rhodesy22/Documents/AppleScript/iTunesPause.scpt",
+			"status": "/Users/rhodesy22/Documents/AppleScript/iTunesStatus.scpt"
 		}
 	]
 }
