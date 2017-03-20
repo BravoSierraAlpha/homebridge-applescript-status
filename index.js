@@ -9,17 +9,35 @@ module.exports = (homebridge) => {
 	homebridge.registerAccessory('homebridge-applescript-status', 'AppleScript', AppleScriptAccessory);
 }
 
-const ApplescriptAccessory = (log, config) => {
-	this.log = log;
-	this.service = 'Switch';
-	this.config = config
-}
-
 class AppleScriptAccessory {
 
-	setState (powerOn, callback) {
-		const state = powerOn ? 'on' : 'off';
+	constructor (log, config) {
+		this.log = log;
+		this.service = 'Switch';
+		this.config = config;
+
+		this.retrieveSwitchState = this.retrieveSwitchState.bind(this)
+
+		this.on = false
+	}
+
+	setState (on, callback) {
+		const state = on ? 'on' : 'off';
 		let command = this.config[state];
+
+		if (this.on === on) return callback()
+
+		const done = (err) => {
+			if (err) {
+				this.log('Error: ' + err);
+				callback(err || new Error('Error setting ' + this.config.name + ' to ' + state));
+			} else {
+				this.on = on
+
+				this.log('Set ' + this.config.name + ' to ' + state);
+				callback(null);
+			}
+		}
 
 		if (this.config.type === 'file') {
 			applescript.execFile(command, done);
@@ -27,16 +45,6 @@ class AppleScriptAccessory {
 			command = command.replace(/''/g, '"');
 
 			applescript.execString(command, done);
-		}
-
-		const done = (err) => {
-			if (err) {
-				accessory.log('Error: ' + err);
-				callback(err || new Error('Error setting ' + this.config.name + ' to ' + state));
-			} else {
-				accessory.log('Set ' + this.config.name + ' to ' + state);
-				callback(null);
-			}
 		}
 	}
 
@@ -44,21 +52,22 @@ class AppleScriptAccessory {
 		let command = this.config.status;
 		if (!command) return
 
+		const done = (err, on) => {
+			setTimeout(this.retrieveSwitchState, (this.config.statusCheckInterval || 1) * 1000);
+
+			if (err) return;
+
+			this.on = !!on
+
+			this.switchService.setCharacteristic(Characteristic.On, !!on);
+		}
+
 		if (this.config.type === 'file') {
 			applescript.execFile(command, done);
 		} else {
 			command = command.replace(/''/g, '"');
 
 			applescript.execString(command, done);
-		}
-
-		const done = (err, response) => {
-			setTimeout(this.retrieveSwitchState, 1000);
-			setTimeout(this.retrieveSwitchState, (this.config.statusCheckInterval || 1) * 1000);
-
-			if (err) return;
-
-			this.switchService.setCharacteristic(Characteristic.On, !!response);
 		}
 	}
 
