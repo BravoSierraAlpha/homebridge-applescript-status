@@ -30,7 +30,8 @@ Configuration sample:
 		"name": "Music",
 		"on": "/Users/rhodesy22/Documents/AppleScript/iTunesPlay.scpt",
 		"off": "/Users/rhodesy22/Documents/AppleScript/iTunesPause.scpt",
-		"status": "/Users/rhodesy22/Documents/AppleScript/iTunesStatus.scpt"
+		"status": "/Users/rhodesy22/Documents/AppleScript/iTunesStatus.scpt",
+		"statusCheckInterval": 1
 	}
 ]
 ```

@@ -54,6 +54,7 @@ class AppleScriptAccessory {
 
 		const done = (err, response) => {
 			setTimeout(this.retrieveSwitchState, 1000);
+			setTimeout(this.retrieveSwitchState, (this.config.statusCheckInterval || 1) * 1000);
 
 			if (err) return;
 
