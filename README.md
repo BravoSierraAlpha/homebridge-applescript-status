@@ -21,7 +21,7 @@ Configuration sample:
 	{
 		"accessory": "AppleScript",
 		"name": "Security Camera",
-    "type": "command",
+		"type": "command",
 		"on": "tell application ''Evocam'' to open ''Security.evocamsettings''",
 		"off": "quit application ''Evocam''"
 	},
