@@ -2,7 +2,9 @@ homebridge-applescript-status
 ======================
 
 Supports triggering AppleScript commands on the HomeBridge platform using either files
-or text commands set in the config.
+or text commands set in the config. Additionally AppleScript can be used to provide a
+status for each accessory in order to keep the accessory in sync with whatever it's
+controlling.
 
 ## Installation
 
